@@ -1,5 +1,6 @@
 package com.android.tetristakethree;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import android.content.Context;
@@ -17,11 +18,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 	Thread thread = null;
 	private Paint paint;
 	private Paint backgroundPaint;
-	GameObjects gameObject;
+	ArrayList<GameObjects> gameObjects;
 	GamePhysics gamePhysics;
 	int w, h;
 	int y = 0;
 	int x = 0;
+	int squareSize = 100;
 	
 	private int randomColor() {
 		int r = random.nextInt(256);
@@ -42,8 +44,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 		paint = new Paint();
 		paint.setColor(randomColor());
 		
-		gameObject = new GameObjects();
-		}
+		gameObjects = new ArrayList<GameObjects>();
+		gameObjects.add(new GameObjects());
+	}
 	
 	public void onResumeGameSurfaceView() {
 		running = true;
@@ -70,12 +73,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 			if (surfaceHolder.getSurface().isValid()) {
 				Canvas canvas = surfaceHolder.lockCanvas();
 				
-				this.gameObject.update();
-				this.gameObject.render(canvas);
+				for (GameObjects gameObject : this.gameObjects) {
+					Rect rect = new Rect(gameObject.x, gameObject.y, squareSize, squareSize);
+					canvas.drawRect(rect, backgroundPaint);
+				}
 
-			surfaceHolder.unlockCanvasAndPost(canvas);
+				surfaceHolder.unlockCanvasAndPost(canvas);
 			}
 		}
-		
 	}
 }
