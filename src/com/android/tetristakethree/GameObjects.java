@@ -1,24 +1,16 @@
 package com.android.tetristakethree;
 
-import android.graphics.Rect;
-
+/**
+ * These will be the actual Tetris shapes
+ */
 public class GameObjects {
-	GameSurfaceView surfaceView;
 	
-	public void scale() {
-		int w = canvas.getWidth();
-		int h = canvas.getHeight();
-		
-		canvas.drawRect(0, 0, w, h, backgroundPaint);
-		
-//		gameObject.rectangle();
-		
-		
-		Rect rect = new Rect();
-		rect.set(x, y, w/12, h/22);
-		canvas.drawRect(rect, paint);
-
+	// some sort description of the shape of the piece
+	
+	int x;
+	int y;
+	
+	public GameObjects() {
+		// maybe accept an x and y?
 	}
-	
-	
 }
