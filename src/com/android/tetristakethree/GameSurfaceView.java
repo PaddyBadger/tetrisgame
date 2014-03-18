@@ -1,13 +1,13 @@
 package com.android.tetristakethree;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -16,22 +16,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 	volatile boolean running = false;
 	Random random;
 	Thread thread = null;
-	private Paint paint;
 	private Paint backgroundPaint;
-	ArrayList<GameObjects> gameObjects;
-	GamePhysics gamePhysics;
+	public GameState game;
 	int w, h;
 	int y = 0;
 	int x = 0;
 	int squareSize = 100;
-	
-	private int randomColor() {
-		int r = random.nextInt(256);
-		int g = random.nextInt(256);
-		int b = random.nextInt(256);
-		
-		return Color.argb(255, r, g, b);
-}
 
 	public GameSurfaceView(Context context) {
 		super(context);
@@ -40,12 +30,6 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 		
 		backgroundPaint = new Paint();
 		backgroundPaint.setColor(Color.WHITE);
-		
-		paint = new Paint();
-		paint.setColor(randomColor());
-		
-		gameObjects = new ArrayList<GameObjects>();
-		gameObjects.add(new GameObjects());
 	}
 	
 	public void onResumeGameSurfaceView() {
@@ -67,15 +51,40 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 		}
 	}
 	
+	public int getColor(int id) {
+		switch(id) {
+		case 1: return Color.argb(255, 245, 10, 170);
+		case 2: return Color.argb(255, 67, 186, 85);
+		case 3: return Color.argb(255, 60, 51, 242);
+		case 4: return Color.argb(255, 245, 10, 10);
+		case 5: return Color.argb(255, 231, 250, 27);
+		default: return Color.argb(255, 60, 51, 242);
+		}	
+	}
+	
 	@Override
 	public void run() {
 		while (running) {
 			if (surfaceHolder.getSurface().isValid()) {
 				Canvas canvas = surfaceHolder.lockCanvas();
 				
-				for (GameObjects gameObject : this.gameObjects) {
-					Rect rect = new Rect(gameObject.x, gameObject.y, squareSize, squareSize);
-					canvas.drawRect(rect, backgroundPaint);
+				int w = canvas.getWidth();
+				int h = canvas.getHeight();
+				canvas.drawRect(0,0,w,h, backgroundPaint);
+				
+				game = new GameState();
+				List<Shape> gameShapes = game.getShapes();
+				
+				for (int i = 0; i < gameShapes.size(); i++ ) {
+					Shape shape = gameShapes.get(i);
+					List<Coordinate> coords = shape.shapeCoordinates();
+					Paint paint = new Paint();
+					paint.setColor(getColor(shape.id));
+					
+					for (int j = 0; j < coords.size(); j++) {
+						Rect rect = new Rect(coords.get(j).x, coords.get(j).y, coords.get(j).x + squareSize, coords.get(j).y + squareSize);
+						canvas.drawRect(rect, paint);
+					}
 				}
 
 				surfaceHolder.unlockCanvasAndPost(canvas);
