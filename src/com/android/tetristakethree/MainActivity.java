@@ -12,18 +12,18 @@ import android.widget.RelativeLayout.LayoutParams;
 
 public class MainActivity extends Activity implements OnClickListener{
 	GameSurfaceView gameSurfaceView;
-	FrameLayout gameFrame;
+	FrameLayout game;
 	RelativeLayout GameButtons;
 	Button left;
 	Button right;
+	Button down;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		gameSurfaceView = new GameSurfaceView(this);
-		
-		gameFrame = new FrameLayout(this);
+		game = new FrameLayout(this);
 		GameButtons = new RelativeLayout(this);
 		
 		left = new Button(this);
@@ -34,32 +34,46 @@ public class MainActivity extends Activity implements OnClickListener{
 		right.setText("Right");
 		right.setId(222);
 		
-		RelativeLayout.LayoutParams firstButton = new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		RelativeLayout.LayoutParams button = new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		down = new Button(this);
+		down.setText("Down");
+		down.setId(333);
+
 		
-		GameButtons.setLayoutParams(button);
+		RelativeLayout.LayoutParams rl = new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams leftButton = new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams rightButton = new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams downButton = new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		
+		GameButtons.setLayoutParams(rl);
 		GameButtons.addView(left);
 		GameButtons.addView(right);
+		GameButtons.addView(down);
 		
-		firstButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-		firstButton.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+		leftButton.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+		leftButton.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 		
-		button.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-		button.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+		rightButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+		rightButton.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 		
-		left.setLayoutParams(button);
-		right.setLayoutParams(firstButton);
+		downButton.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+		downButton.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 		
-		gameFrame.addView(gameSurfaceView);
-		gameFrame.addView(GameButtons);
-		setContentView(gameFrame);
+		left.setLayoutParams(leftButton);
+		right.setLayoutParams(rightButton);
+		down.setLayoutParams(downButton);
+		
+		game.addView(gameSurfaceView);
+		game.addView(GameButtons);
+		setContentView(game);
 		
 		View leftButtonListener = findViewById(111);
 		leftButtonListener.setOnClickListener(this);
 		
 		View rightButtonListener = findViewById(222);
 		rightButtonListener.setOnClickListener(this);
-		Log.i("this is the end", "of onCreate!");
+		
+		View downButtonListener = findViewById(333);
+		downButtonListener.setOnClickListener(this);
 	}
 	
 	@Override
@@ -76,13 +90,12 @@ public class MainActivity extends Activity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		Log.i("button is", "pressed");
 		if (v == left) {
-			gameSurfaceView.game.userPressedLeft();
-			Log.i("button is", "left");
+		   gameSurfaceView.game.userPressedLeft();
 		} else if (v == right) {
 			gameSurfaceView.game.userPressedRight();
-			Log.i("button is", "right");
+		} else if (v == down) {
+			gameSurfaceView.game.userPressedDown();
 		}
 	}
 }
