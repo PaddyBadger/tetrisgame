@@ -58,13 +58,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 		}
 	}
 	
-	public int getColor(int id) {
+	public int getColor(Piece id) {
 		switch(id) {
-		case 1: return Color.argb(255, 245, 10, 170);
-		case 2: return Color.argb(255, 67, 186, 85);
-		case 3: return Color.argb(255, 60, 51, 242);
-		case 4: return Color.argb(255, 245, 10, 10);
-		case 5: return Color.argb(255, 231, 250, 27);
+		case T: return Color.argb(255, 245, 10, 170);
+		case L: return Color.argb(255, 67, 186, 85);
+		case Z: return Color.argb(255, 60, 51, 242);
+		case S: return Color.argb(255, 245, 10, 10);
+		case LL: return Color.argb(255, 231, 250, 27);
 		default: return Color.argb(255, 60, 51, 242);
 		}	
 	}

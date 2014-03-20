@@ -15,7 +15,7 @@ public class GameState {
 	
 	
 	public GameState(GameSurfaceView surface) {
-		Shape tShape = Shape.t(surface);
+		Shape tShape = Shape.l(surface);
 		shapes.add(tShape);
 		
 		fallingShape = tShape;
@@ -29,13 +29,13 @@ public class GameState {
 		case 2: return Shape.z(surface);
 		case 3: return Shape.s(surface);
 		case 4: return Shape.ll(surface);
-		default: return Shape.t(surface);	
+		default: return Shape.ll(surface);	
 		}
 	}
 	
 	public int randomNumber() {
 		Random rand = new Random();
-		int newShape = rand.nextInt(4);
+		int newShape = rand.nextInt(5);
 		return newShape;
 	}
 	
@@ -106,6 +106,6 @@ public class GameState {
 	}
 	
 	public void userPressedRotate() {
-		fallingShape.rotate();
+		fallingShape.rotate(fallingShape.id);
 	}
 }
