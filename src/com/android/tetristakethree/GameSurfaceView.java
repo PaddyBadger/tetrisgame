@@ -80,34 +80,6 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 		return screenWidth;
 	}
 	
-	public List<int[]> getFalling() {
-		List<int[]> getFalling = new ArrayList<int[]>();
-		int[] aPair = {game.fallingShape.a.x+100, game.fallingShape.a.y+100};
-		int[] bPair = {game.fallingShape.b.x+100, game.fallingShape.b.y+100};
-		int[] cPair = {game.fallingShape.c.x+100, game.fallingShape.c.y+100};
-		int[] dPair = {game.fallingShape.d.x+100, game.fallingShape.d.y+100};
-		getFalling.add(aPair);
-		getFalling.add(bPair);
-		getFalling.add(cPair);
-		getFalling.add(dPair);
-	
-		return getFalling;
-	}
-	
-	public List<int[]> getCoordinates() {
-		List<int[]> coordinateList = new ArrayList<int[]>();
-		for (int i = 0; i < game.shapes.size(); i++ ) {
-			Shape shape = game.shapes.get(i);
-			List<Coordinate> coords = shape.shapeCoordinates();
-			
-			for (int j = 0; j < coords.size(); j++) {
-				int[] pair = {coords.get(j).x, coords.get(j).y};
-				coordinateList.add(pair);
-			}
-		}
-		return coordinateList;
-	}
-	
 	@Override
 	public void run() {
 		while (running) {
@@ -135,7 +107,6 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 				surfaceHolder.unlockCanvasAndPost(canvas);
 				try {
 					Thread.sleep(1000);
-					game.compareCoordinates(getFalling(), getCoordinates());
 					game.fallingShape.fall();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block

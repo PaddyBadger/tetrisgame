@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		right.setId(222);
 		
 		down = new Button(this);
-		down.setText("Down");
+		down.setText("Rotate");
 		down.setId(333);
 
 		
@@ -95,7 +95,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		} else if (v == right) {
 			gameSurfaceView.game.userPressedRight();
 		} else if (v == down) {
-			gameSurfaceView.game.userPressedDown();
+			gameSurfaceView.game.userPressedRotate();
 		}
 	}
 }

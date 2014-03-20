@@ -97,6 +97,10 @@ public class Shape {
 		}
 	}
 	
+	public void rotate() {
+		this.a.y = 
+	}
+	
 	public void left() {
 		if (a.x > 0 && b.x > 0 && c.x > 0 && d.x > 0 && a.y < dH() && b.y < dH() && c.y < dH() && d.y < dH()) {
 			this.a.x -= 100;
