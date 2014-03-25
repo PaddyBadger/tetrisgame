@@ -1,6 +1,6 @@
 package com.android.tetristakethree;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import android.content.Context;
@@ -16,19 +16,19 @@ import android.view.SurfaceView;
 public class GameSurfaceView extends SurfaceView implements Runnable {
 	SurfaceHolder surfaceHolder;
 	volatile boolean running = false;
-	Random random;
 	Thread thread = null;
 	private Paint backgroundPaint;
 	public GameState game;
 	int w, h;
 	int y = 0;
 	int x = 0;
-	int squareSize = 100;
+	int squareSize = 95;
+	String compareDeleteCoordString;
+	List<Coordinate> coords;
 
 	public GameSurfaceView(Context context) {
 		super(context);
 		surfaceHolder = getHolder();
-		random = new Random();
 		
 		backgroundPaint = new Paint();
 		backgroundPaint.setColor(Color.WHITE);
@@ -80,6 +80,16 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 		return screenWidth;
 	}
 	
+	private int h(int dH) {
+		int h = dH / 22;
+		return h;
+	}
+	
+	private int w(int dW) {
+		int w = dW / 13;
+		return w;
+	}
+	
 	@Override
 	public void run() {
 		while (running) {
@@ -94,12 +104,30 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 				
 				for (int i = 0; i < gameShapes.size(); i++ ) {
 					Shape shape = gameShapes.get(i);
-					List<Coordinate> coords = shape.shapeCoordinates();
+					
 					Paint paint = new Paint();
 					paint.setColor(getColor(shape.id));
 					
-					for (int j = 0; j < coords.size(); j++) {
-						Rect rect = new Rect(coords.get(j).x, coords.get(j).y, coords.get(j).x + squareSize, coords.get(j).y + squareSize);
+					List<Coordinate> coordinatesToDelete = game.deleteThisRow();
+					coords = shape.shapeCoordinates();
+						
+					for (int k = 0; k < coordinatesToDelete.size(); k++) {
+						int[] compareCoordToDelete = {coordinatesToDelete.get(k).x, coordinatesToDelete.get(k).y};
+						compareDeleteCoordString = Arrays.toString(compareCoordToDelete);
+						
+						for (int j = 0; j < coords.size(); j++) {
+	
+							int[] compareCoord = {coords.get(j).x, coords.get(j).y};
+							String compareCoordString = Arrays.toString(compareCoord);
+							
+							if(compareCoordString.equals(compareDeleteCoordString)) {
+								coords.remove(j);
+							}
+						}
+					}
+					
+					for (int k = 0; k < coords.size(); k++) {
+						Rect rect = new Rect(coords.get(k).x, coords.get(k).y, coords.get(k).x + squareSize, coords.get(k).y + squareSize);
 						canvas.drawRect(rect, paint);
 					}
 				}

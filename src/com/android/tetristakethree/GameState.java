@@ -12,6 +12,7 @@ public class GameState {
 	Shape fallingShape;
 	int ground;
 	GameSurfaceView surface;
+	List<int[]> deleteMe;
 	
 	
 	public GameState(GameSurfaceView surface) {
@@ -41,6 +42,7 @@ public class GameState {
 	
 	public List<Shape> getShapes() {
 		compareCoordinates(getFalling(), getCoordinates());
+		isThisRowFull(getCoordinates());
 		if (!fallingShape.isFalling) {
 			int shapeNumber = randomNumber();
 			Shape addShape = makeNewShape(shapeNumber, surface);
@@ -91,6 +93,78 @@ public class GameState {
 					fallingShape.isFalling = false;				}
 			}	
 		}
+		isThisRowFull(getCoordinates());
+	}
+	
+	public void isThisRowFull(List<int[]> getCoordinates) {
+		List<int[]> nine = new ArrayList<int[]>();
+		List<int[]> eight = new ArrayList<int[]>();
+		List<int[]> seven = new ArrayList<int[]>();
+		List<int[]> six = new ArrayList<int[]>();
+		List<int[]> five = new ArrayList<int[]>();
+		 for (int i = 0; i < getCoordinates().size(); i++) {
+			int[] coordPair = getCoordinates.get(i);	 	
+				switch (coordPair[1]) {
+				case 900: nine.add(coordPair);
+						  break;
+				case 800: eight.add(coordPair);
+						  break;
+				case 700: seven.add(coordPair);
+						  break;
+				case 600: six.add(coordPair);
+						  break;
+				case 500: five.add(coordPair);
+						  break;
+				default:
+				}
+				
+		}
+		deleteMe = new ArrayList<int[]>();
+		
+		if (nine.size() == 7) { 
+			for (int i = 0; i < nine.size(); i++) {
+				int[] addToDeleteMe = nine.get(i);
+				Log.i("nine 1 " + nine.get(i)[0], "nine 2 "  + nine.get(i)[1]);
+				deleteMe.add(addToDeleteMe);
+			}
+		}
+		
+		if (eight.size() == 7) {
+			for (int i = 0; i < eight.size(); i++) {
+				int[] addToDeleteMe = eight.get(i);
+				Log.i("eight 1 " + eight.get(i)[0], "eight 2 "  + eight.get(i)[1]);
+				deleteMe.add(addToDeleteMe);
+			}
+		}
+		if (seven.size() == 7) {
+			for (int i = 0; i < seven.size(); i++) {
+				int[] addToDeleteMe = seven.get(i);
+				deleteMe.add(addToDeleteMe);
+			}
+		}
+		if (six.size() == 7) {
+			for (int i = 0; i < six.size(); i++) {
+				int[] addToDeleteMe = six.get(i);
+				deleteMe.add(addToDeleteMe);
+			}
+		}
+		if (five.size() == 7) {
+			for (int i = 0; i < five.size(); i++) {
+				int[] addToDeleteMe = five.get(i);
+				deleteMe.add(addToDeleteMe);
+			}
+		}
+	}
+	
+	public List<Coordinate> deleteThisRow() {
+		List<Coordinate> coordsToDelete = new ArrayList<Coordinate>();
+		for (int i = 0; i < deleteMe.size(); i++) {
+			int x = deleteMe.get(i)[0];
+			int y = deleteMe.get(i)[1];
+			Coordinate coord = new Coordinate(x,y);		
+			coordsToDelete.add(coord);
+		}
+		return coordsToDelete;
 	}
 	
 	public void userPressedLeft() {

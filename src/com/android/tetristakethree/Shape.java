@@ -8,7 +8,7 @@ import android.util.Log;
 public class Shape {
 	Coordinate a,b,c,d;
 	public Piece id;
-	public int down, right, rotate;
+	public int down, right, rotate, w,h;
 	GameSurfaceView display;
 	Boolean isFalling = true;
 	
@@ -25,13 +25,25 @@ public class Shape {
 	
 	private int dH() {
 		int dh = display.displayHeight()-300;
+		h(dh);
 		return dh;
 	}
 	
+	private int h(int dH) {
+		int h = dH / 22;
+		return h;
+	}
 	
 	private int dW() {
 		int dw = display.displayWidth()-200;
+		w(dw);
 		return dw;
+	}
+	
+	private int w(int dW) {
+		// int columns = dW / h;
+		// int w = dW / columns;
+		return w;
 	}
 	
 	
